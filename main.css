@@ -1,0 +1,37 @@
+body{
+     margin: 0;
+}
+
+nav{
+    padding: 20px;
+    display: flex;
+}
+#flexSpacer {
+    flex-basis: 100%;
+}
+
+#startSort{
+    background: blue;
+    color: white;
+    padding: 10 20px 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid red;
+    font-size: 16px;
+}
+#startSort:hover{
+    background-color: #3838fb;
+}
+
+#barContainer{
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+.bar{
+    background-color: #3838fb;
+}
+#sliderContainer{
+    margin-left: 50px;
+}
