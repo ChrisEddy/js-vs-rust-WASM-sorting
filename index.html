@@ -28,6 +28,10 @@
                 document.getElementById("arraySliderValue").innerText = arraySize;
             })
 
+            document.getElementById("arraySlider").addEventListener("change", (e) => {
+                createBars()
+            })
+
             window.addEventListener('load' , () => {
                 createBars()
             })
