@@ -8,19 +8,31 @@
             <button id="startSort">Go!</button>
             <div id="sliderContainer">
                 <label for="arraySlider">Array Size</label> 
-                <input type="range" min="1" max="10000" value="1000" id="arraySlider" name="arraySlider">
-                <span id="arraySliderValue">1000</span>
+                <input type="range" min="10" max="1000" value="100" id="arraySlider" name="arraySlider">
+                <span id="arraySliderValue">100</span>
             </div>
+            <select>
+                <option value="selection">Selection</option>
+            </select>
         </nav>
         <div id="barContainer">
 
         </div>
         <script>
-            let arraySize = 1000;
+            let arraySize = 100;
             let array = [];
+            let algorithm = "selection"
+            let barContainer;
 
             document.getElementById("startSort").addEventListener("click", () => {
                 createBars()
+                switch (algorithm) {
+                    case "selection":
+                        selectionSort();
+                        break;
+                    default:
+                        break;
+                }
             })
 
             document.getElementById("arraySlider").addEventListener("input", (e) => {
@@ -33,11 +45,11 @@
             })
 
             window.addEventListener('load' , () => {
+                barContainer = document.getElementById("barContainer");
                 createBars()
             })
 
             const createBars = () => {
-                const barContainer = document.getElementById("barContainer");
                 const barContainerDimensions = barContainer.getBoundingClientRect();
                 const barContainerWidth = barContainerDimensions.width;
                 const barContainerHeight = barContainerDimensions.height;
@@ -52,6 +64,34 @@
                     bar.style.width = `${barContainerWidth / arraySize}%`
                     barContainer.appendChild(bar);
                 }
+            }
+
+            const selectionSort = () => {
+                const length = barContainer.childNodes.length;
+                let array = barContainer.childNodes;
+                let i = 0;
+                const interval = setInterval(() => {
+                    let pointer = array[i];
+                    pointer.style.backgroundColor = "green"
+                    let min = i;
+                    for(let j = i + 1; j < length; j++) {
+                        if(array[j].style.height < array[min].style.height){
+                            min = j;
+                        }
+                    }
+                    array[min].style.backgroundColor = "yellow"
+                    if(min != i) {
+                        let temp = pointer;
+                        pointer.style.height = array[min].style.height
+                        console.log(pointer.style.height)
+                        // array[min].style.height = temp.style.height;
+                    }
+                    console.log(i)
+                    if (i + 1 === length) {
+                        clearInterval(interval)
+                    }
+                    i++;
+                }, 100)
             }
 
         </script>
