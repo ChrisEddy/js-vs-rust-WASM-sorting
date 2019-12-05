@@ -11,6 +11,11 @@
                 <input type="range" min="10" max="1000" value="100" id="arraySlider" name="arraySlider">
                 <span id="arraySliderValue">100</span>
             </div>
+            <div id="speedContainer">
+                <label for="speedSlider">Visual Speed</label> 
+                <input type="range" min="1" max="100" value="10" id="speedSlider" name="speedSlider">
+                <span id="speedSliderValue">10</span>
+            </div>
             <select id="algoSelect">
                 <option value="selection">Selection</option>
             </select>
@@ -28,6 +33,7 @@
             let algorithm = "selection"
             let barContainer;
             let completionTime;
+            let speed = 10;
 
             document.getElementById("startSort").addEventListener("click", () => {
                 createBars()
@@ -50,6 +56,11 @@
                 createBars()
             })
 
+            document.getElementById("speedSlider").addEventListener("input", (e) => {
+                speed = e.target.value;
+                document.getElementById("speedSliderValue").innerText = speed;
+            })
+
             window.addEventListener('load' , () => {
                 barContainer = document.getElementById("barContainer");
                 createBars()
@@ -63,7 +74,7 @@
                 barContainer.innerHTML = "";
 
                 for(let i = 0; i < arraySize; i++){
-                    const value = (Math.random() * 101) + 1;
+                    const value = (Math.random() * 100);
                     let bar = document.createElement("div");
                     bar.className = "bar";
                     bar.style.height = `${value}%`;
@@ -81,22 +92,22 @@
                     pointer.style.backgroundColor = "green"
                     let min = i;
                     for(let j = i + 1; j < length; j++) {
-                        if(array[j].style.height < array[min].style.height){
+                        if(parseFloat(array[j].style.height.substring(0, array[j].style.height.length - 1)) < parseFloat(array[min].style.height.substring(0, array[min].style.height.length - 1))){
                             min = j;
+                            array[j].style.backgroundColor = "purple"
                         }
                     }
-                    array[min].style.backgroundColor = "yellow"
                     if(min != i) {
-                        let temp = pointer;
-                        pointer.style.height = array[min].style.height
-                        // array[min].style.height = temp.style.height;
+                        let temp = pointer.style.height;
+                        pointer.style.height = array[min].style.height;
+                        array[min].style.height = temp;
                     }
                     if (i + 1 === length) {
                         console.log("Selection sort complete...")
                         clearInterval(interval)
                     }
                     i = i + 1;
-                }, 100)
+                }, 1000 / speed)
             }
 
             const selectionSort = () => {
