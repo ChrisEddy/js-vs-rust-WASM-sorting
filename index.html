@@ -18,6 +18,7 @@
             </div>
             <select id="algoSelect">
                 <option value="selection">Selection</option>
+                <option value="quickSort">Quick Sort</option>
             </select>
             <div id="timeContainer">
                 <span>Time:</span>
@@ -39,12 +40,20 @@
                 createBars()
                 switch (algorithm) {
                     case "selection":
-                        selectionSortVisual();
                         selectionSort();
+                        selectionSortVisual();
+                        break;
+                    case "quickSort":
+                        quickSort(barContainer.childNodes, (a, b) => a < b);
+                        quickSortVisual(barContainer.childNodes, (a, b) => a < b);
                         break;
                     default:
                         break;
                 }
+            })
+
+            document.getElementById("algoSelect").addEventListener("change", e => {
+                algorithm = e.target.value
             })
 
             document.getElementById("arraySlider").addEventListener("input", (e) => {
@@ -131,6 +140,95 @@
                 completionTime = t1 - t0;
                 console.log("Selection Sort took:", completionTime, "ms")
                 document.getElementById('completionTime').innerText = completionTime + " ms";
+            }
+
+            const quickSortVisual = (array, sortFunction) => { 
+
+                const swap = (i, j) => {
+                    const t = array[i];
+                    array[i] = array[j];
+                    array[i].style.height = array[j].style.height
+                    array[j] = t;
+                    array[j].style.height = t.style.height
+                }
+
+                const quicksort = (left, right) => {
+                    if (left < right) {
+                        let pivot = array[left + Math.floor((right - left) / 2)],
+                        left_new = left,
+                        right_new = right;
+
+                        pivot.style.backgroundColor = "green"
+                        
+                        do {
+                            while (
+                                sortFunction(
+                                parseFloat(array[left_new].style.height.substring(0, array[left_new].style.height.length - 1)),
+                                parseFloat(pivot.style.height.substring(0, pivot.style.height.length - 1)))) {
+                                left_new += 1;
+                            }
+                            while (
+                                sortFunction(
+                                parseFloat(pivot.style.height.substring(0, pivot.style.height.length - 1)),
+                                parseFloat(array[right_new].style.height.substring(0, array[right_new].style.height.length - 1)))) {
+                                right_new -= 1;
+                            }
+                            if (left_new <= right_new) {
+                                swap(left_new, right_new);
+                                left_new += 1;
+                                right_new -= 1;
+                            }
+                        } while (left_new <= right_new);
+
+                        quicksort(left, right_new);
+                        quicksort(left_new, right);
+                    }
+                }
+                quicksort(0, array.length - 1);
+                return array;
+            }
+
+            const quickSort = (array, sortFunction) => { 
+                const t0 = performance.now();
+
+                const swap = (i, j) => {
+                    const t = array[i];
+                    array[i] = array[j];
+                    array[j] = t;
+                }
+
+                const quicksort = (left, right) => {
+                    if (left < right) {
+                        let pivot = array[left + Math.floor((right - left) / 2)],
+                            left_new = left,
+                            right_new = right;
+
+                        do {
+                        while (sortFunction(array[left_new], pivot)) {
+                            left_new += 1;
+                        }
+                        while (sortFunction(pivot, array[right_new])) {
+                            right_new -= 1;
+                        }
+                        if (left_new <= right_new) {
+                            swap(left_new, right_new);
+                            left_new += 1;
+                            right_new -= 1;
+                        }
+                        } while (left_new <= right_new);
+
+                        quicksort(left, right_new);
+                        quicksort(left_new, right);
+                    }
+                }
+                quicksort(0, array.length - 1);
+
+                const t1 = performance.now();
+                completionTime = t1 - t0;
+                document.getElementById('completionTime').innerText = completionTime + " ms";
+                console.log("Quick Sort took:", completionTime, "ms")
+
+                return array;
             }
 
         </script>
