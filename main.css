@@ -32,6 +32,7 @@ nav{
 .bar{
     background-color: #3838fb;
     transition: height 0.5s;
+    border: 1px solid #0000004f;
 }
 #sliderContainer{
     margin-left: 50px;
